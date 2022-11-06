@@ -1,5 +1,5 @@
-const typer = document.getElementById('typer');
-const fps = 20;
+let typer = undefined;
+const typerFps = 20;
 
 const thingsILike = [
     'to code',
@@ -9,7 +9,7 @@ const thingsILike = [
     'c# and .net',
 ];
 
-const fuzzyChars = '$@!%^&*()+~|}{[]?></-=';
+const fuzzyChars = "x0123456789?!@$\\%&=/+-";
 
 let currentThingILike = 0;
 let currentStep = 0;
@@ -63,7 +63,7 @@ const defuzzy = (current, next) => {
     return current.substring(0, randomCharToReplace) + next[randomCharToReplace] + current.substring(randomCharToReplace + 1);
 }
 
-const frame = () => {
+const typerFrame = () => {
     if (currentStep === 0) {
         currentString = fuzzy(currentString);
         currentStepProgress++;
@@ -94,7 +94,7 @@ const frame = () => {
         // Wait for a bit
         currentStepProgress++;
 
-        if (currentStepProgress === fps) {
+        if (currentStepProgress === typerFps) {
             currentStep = 0;
             currentStepProgress = 0;
         }
@@ -102,7 +102,10 @@ const frame = () => {
 
     typer.textContent = currentString;
 
-    setTimeout(frame, 1000 / fps);       
+    setTimeout(typerFrame, 1000 / typerFps);       
 }
 
-frame();
+(function() {
+    typer = document.getElementById('typer');
+    typerFrame();
+})();
