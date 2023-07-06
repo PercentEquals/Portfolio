@@ -54,7 +54,7 @@ const init = () => {
     canvas.height = header.offsetHeight;
 
     stars = [];
-    const starCount = Math.round(canvas.width * (canvas.height / 500) * 0.1);
+    let starCount = Math.round(canvas.width * (canvas.height / 500) * 0.1);
 
     if (starCount > 400) starCount = 400;
 	if (starCount < 50)  starCount = 50;
@@ -88,7 +88,7 @@ const init = () => {
 
 const canvasFrame = () => {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-	ctx.strokeStyle = "#EEE";
+    ctx.strokeStyle = "#EEE";
 	ctx.fillStyle = "#EEE";
 	ctx.lineWidth = 1.5;
 
@@ -105,12 +105,14 @@ const canvasFrame = () => {
 
                 if (Math.hypot(stars[i].x - stars[j].x, stars[i].y - stars[j].y) < 120) {
 
-                    if (!(Math.hypot((stars[i].x + stars[j].x) / 2 - mouseX, (stars[i].y + stars[j].y) / 2 - mouseY) < 200)) {
+                    let mouseHypot = Math.hypot((stars[i].x + stars[j].x) / 2 - mouseX, (stars[i].y + stars[j].y) / 2 - mouseY);
+
+                    if (mouseHypot >= 200) {
                         continue;
                     }
 
                     ctx.beginPath();
-                    ctx.globalAlpha = (100 - Math.hypot(stars[i].x - stars[j].x, stars[i].y - stars[j].y)) / 100;
+                    ctx.globalAlpha = (200 - mouseHypot) / 100;
                     ctx.moveTo(stars[i].x, stars[i].y);
                     ctx.lineTo(stars[j].x, stars[j].y);
                     ctx.stroke();
